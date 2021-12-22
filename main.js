@@ -1,11 +1,7 @@
 const diCaprioBirthYear = 1974;
-const age = function (year) {
+const calculateHisAge = function (year) {
     return year - diCaprioBirthYear;
 };
-const today = new Date().getFullYear();
-const ageToday = age(today);
-// ----------------------------------------------------------
-
 const height = 600;
 const width = 800;
 const margin = {
@@ -14,6 +10,7 @@ const margin = {
     left: 40,
     right: 10,
 };
+
 const svg = d3
     .select("#chart")
     .append("svg")
@@ -51,16 +48,16 @@ d3.csv("data.csv").then((data) => {
     data.map((d) => {
         d.age = +d.age;
         d.year = +d.year;
-        // d.year = formatDate(d.year);
     });
 
-    x.domain(data.map((d) => d.year));
-    y.domain([
-        d3.min(data.map((d) => d.age)) - 2,
-        d3.max(data.map((d) => d.age)),
-    ]);
+    let diCaprioAges = [];
+    for (let i = 0; i < data.length; i++) {
+        const hisAge = calculateHisAge(data[i].year);
+        diCaprioAges.push(hisAge);
+    }
 
-    // console.log(data);
+    x.domain(data.map((d) => d.year));
+    y.domain([d3.min(data.map((d) => d.age)) - 2, d3.max(diCaprioAges)]);
 
     xAxisGroup.call(xAxis);
     yAxisGroup.call(yAxis);
