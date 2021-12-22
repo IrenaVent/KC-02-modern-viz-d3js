@@ -20,7 +20,11 @@ const svg = d3
     .attr("id", "svg")
     .attr("width", width)
     .attr("height", height);
-const elementGroup = svg.append("g").attr("id", "elementGroup");
+
+elementGroup = svg
+    .append("g")
+    .attr("id", "elementGroup")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 let x = d3
     .scaleBand()
@@ -46,6 +50,7 @@ const yAxis = d3.axisLeft().scale(y).ticks(6);
 d3.csv("data.csv").then((data) => {
     data.map((d) => {
         d.age = +d.age;
+        d.year = +d.year;
         // d.year = formatDate(d.year);
     });
 
@@ -59,4 +64,16 @@ d3.csv("data.csv").then((data) => {
 
     xAxisGroup.call(xAxis);
     yAxisGroup.call(yAxis);
+
+    yAxisGroup.select(".domain").remove();
+
+    let elements = elementGroup.selectAll("rect").data(data);
+    elements
+        .enter()
+        .append("rect")
+        .attr("class", (d) => d.name)
+        .attr("height", (d) => height - y(d.age) - margin.bottom - margin.top)
+        .attr("y", (d) => y(d.age))
+        .attr("x", (d) => x(d.year))
+        .attr("width", x.bandwidth());
 });
