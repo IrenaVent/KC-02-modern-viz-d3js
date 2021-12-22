@@ -40,7 +40,9 @@ const yAxisGroup = axisGroup
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
 const xAxis = d3.axisBottom().scale(x);
-const yAxis = d3.axisLeft().scale(y).ticks(6);
+const yAxis = d3.axisLeft().scale(y).ticks(10);
+
+let tooltip = elementGroup.append("g").attr("id", "tooltip");
 
 // const formatDate = d3.timeParse("%Y");
 
@@ -53,19 +55,30 @@ d3.csv("data.csv").then((data) => {
     let diCaprioAges = [];
     for (let i = 0; i < data.length; i++) {
         const hisAge = calculateHisAge(data[i].year);
-        diCaprioAges.push(hisAge);
+        const yearAge = { year: data[i].year, age: hisAge };
+        diCaprioAges.push(yearAge);
     }
 
+    // let prueba = [];
+    // for (let i = 0; i < data.length; i++) {
+    //     const hisAge = calculateHisAge(data[i].year);
+    //     const yearAge = [data[i].year, hisAge];
+    //     prueba.push(yearAge);
+    // }
+
     x.domain(data.map((d) => d.year));
-    y.domain([d3.min(data.map((d) => d.age)) - 2, d3.max(diCaprioAges)]);
+    y.domain([
+        d3.min(data.map((d) => d.age)) - 2,
+        d3.max(diCaprioAges.map((d) => d.age)) + 2,
+    ]);
 
     xAxisGroup.call(xAxis);
     yAxisGroup.call(yAxis);
 
     yAxisGroup.select(".domain").remove();
 
-    let elements = elementGroup.selectAll("rect").data(data);
-    elements
+    let barAges = elementGroup.selectAll("rect").data(data);
+    barAges
         .enter()
         .append("rect")
         .attr("class", (d) => d.name)
@@ -73,4 +86,24 @@ d3.csv("data.csv").then((data) => {
         .attr("y", (d) => y(d.age))
         .attr("x", (d) => x(d.year))
         .attr("width", x.bandwidth());
+
+    let valueLine = d3
+        .line()
+        .x((d) => x(d.year))
+        .y((d) => y(d.age));
+
+    let lineAges = elementGroup
+        .append("path")
+        .attr("class", "diCaprioAgesLine")
+        .attr("d", valueLine(diCaprioAges));
+
+    lineAges.attr("stroke", "black");
+
+    let circleRefAge = tooltip.selectAll("circle").data(diCaprioAges);
+    circleRefAge
+        .enter()
+        .append("circle")
+        .attr("cx", (d) => x(d.year))
+        .attr("cy", (d) => y(d.age))
+        .attr("r", "3");
 });
