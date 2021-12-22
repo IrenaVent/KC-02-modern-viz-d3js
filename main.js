@@ -14,7 +14,6 @@ const margin = {
     left: 40,
     right: 10,
 };
-
 const svg = d3
     .select("#chart")
     .append("svg")
@@ -27,13 +26,37 @@ let x = d3
     .scaleBand()
     .range([0, width - margin.left - margin.right])
     .padding(0.1);
-let y = d3.scaleLinear().range([height - margin.top - margin.bottom], 0);
+let y = d3.scaleLinear().range([height - margin.top - margin.bottom, 0]);
 
 const axisGroup = svg.append("g").attr("id", "axisGroup");
-const xAxisGroup = axisGroup.append("g").attr("id", "xAxisGroup");
-const yAxisGroup = axisGroup.append("g").attr("id", "yAxisGroup");
+const xAxisGroup = axisGroup
+    .append("g")
+    .attr("id", "xAxisGroup")
+    .attr("transform", `translate(${margin.left}, ${height - margin.bottom})`);
+const yAxisGroup = axisGroup
+    .append("g")
+    .attr("id", "yAxisGroup")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
 
 const xAxis = d3.axisBottom().scale(x);
-const yAxis = d3.axisLeft().scale(y);
+const yAxis = d3.axisLeft().scale(y).ticks(6);
 
-d3.csv("data.csv").then((data) => {});
+// const formatDate = d3.timeParse("%Y");
+
+d3.csv("data.csv").then((data) => {
+    data.map((d) => {
+        d.age = +d.age;
+        // d.year = formatDate(d.year);
+    });
+
+    x.domain(data.map((d) => d.year));
+    y.domain([
+        d3.min(data.map((d) => d.age)) - 2,
+        d3.max(data.map((d) => d.age)),
+    ]);
+
+    // console.log(data);
+
+    xAxisGroup.call(xAxis);
+    yAxisGroup.call(yAxis);
+});
