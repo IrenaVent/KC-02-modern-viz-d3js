@@ -26,7 +26,7 @@ elementGroup = svg
 let x = d3
     .scaleBand()
     .range([0, width - margin.left - margin.right])
-    .padding(0.1);
+    .padding(0.4);
 let y = d3.scaleLinear().range([height - margin.top - margin.bottom, 0]);
 
 const axisGroup = svg.append("g").attr("id", "axisGroup");
@@ -42,7 +42,12 @@ const yAxisGroup = axisGroup
 const xAxis = d3.axisBottom().scale(x);
 const yAxis = d3.axisLeft().scale(y).ticks(10);
 
+let barAges = elementGroup.append("g").attr("id", "barAges");
+let lineAges = elementGroup.append("g").attr("id", "lineAges");
+
 let tooltip = elementGroup.append("g").attr("id", "tooltip");
+let girlsTexAge = tooltip.append("g").attr("id", "girlsTexAge");
+let circleRefAge = tooltip.append("g").attr("id", "circleRefAge");
 
 // const formatDate = d3.timeParse("%Y");
 
@@ -77,8 +82,8 @@ d3.csv("data.csv").then((data) => {
 
     yAxisGroup.select(".domain").remove();
 
-    let barAges = elementGroup.selectAll("rect").data(data);
-    barAges
+    let bAges = barAges.selectAll("rect").data(data);
+    bAges
         .enter()
         .append("rect")
         .attr("class", (d) => d.name)
@@ -87,24 +92,35 @@ d3.csv("data.csv").then((data) => {
         .attr("x", (d) => x(d.year))
         .attr("width", x.bandwidth());
 
+    let gTexAge = girlsTexAge.selectAll("text").data(data);
+    gTexAge
+        .enter()
+        .append("text")
+        .attr("class", "girlsTextAge")
+        .text((d) => d.age)
+        .attr("text-anchor", "middle")
+        .attr("x", (d) => x(d.year) + x.bandwidth() / 2)
+        .attr("y", (d) => y(d.age) - x.bandwidth() / 4)
+        .attr("font-size", "10px");
+
     let valueLine = d3
         .line()
         .x((d) => x(d.year) + x.bandwidth() / 2)
         .y((d) => y(d.age));
 
-    let lineAges = elementGroup
+    let lAges = lineAges
         .append("path")
         .attr("class", "diCaprioAgesLine")
         .attr("d", valueLine(diCaprioAges));
-    lineAges.attr("stroke", "black");
+    lAges.attr("stroke", "black");
 
     // console.log(diCaprioAges);
 
-    let circleRefAge = tooltip.selectAll("circle").data(diCaprioAges);
-    circleRefAge
+    let cRefAge = circleRefAge.selectAll("circle").data(diCaprioAges);
+    cRefAge
         .enter()
         .append("circle")
         .attr("cx", (d) => x(d.year) + x.bandwidth() / 2)
         .attr("cy", (d) => y(d.age))
-        .attr("r", x.bandwidth() / 8);
+        .attr("r", x.bandwidth() / 5);
 });
