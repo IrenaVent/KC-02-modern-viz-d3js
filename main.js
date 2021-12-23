@@ -89,21 +89,22 @@ d3.csv("data.csv").then((data) => {
 
     let valueLine = d3
         .line()
-        .x((d) => x(d.year))
+        .x((d) => x(d.year) + x.bandwidth() / 2)
         .y((d) => y(d.age));
 
     let lineAges = elementGroup
         .append("path")
         .attr("class", "diCaprioAgesLine")
         .attr("d", valueLine(diCaprioAges));
-
     lineAges.attr("stroke", "black");
+
+    // console.log(diCaprioAges);
 
     let circleRefAge = tooltip.selectAll("circle").data(diCaprioAges);
     circleRefAge
         .enter()
         .append("circle")
-        .attr("cx", (d) => x(d.year))
+        .attr("cx", (d) => x(d.year) + x.bandwidth() / 2)
         .attr("cy", (d) => y(d.age))
-        .attr("r", "3");
+        .attr("r", x.bandwidth() / 8);
 });
