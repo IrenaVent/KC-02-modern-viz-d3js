@@ -47,7 +47,9 @@ let lineAges = elementGroup.append("g").attr("id", "lineAges");
 
 let tooltip = elementGroup.append("g").attr("id", "tooltip");
 let girlsTexAge = tooltip.append("g").attr("id", "girlsTexAge");
+let diCaprioTexAge = tooltip.append("g").attr("id", "diCaprioTexAge");
 let circleRefAge = tooltip.append("g").attr("id", "circleRefAge");
+let lineRefAge = tooltip.append("g").attr("id", "lineRefAge");
 
 // const formatDate = d3.timeParse("%Y");
 
@@ -81,6 +83,7 @@ d3.csv("data.csv").then((data) => {
     yAxisGroup.call(yAxis);
 
     yAxisGroup.select(".domain").remove();
+    // xAxisGroup.select(".domain").remove();
 
     let bAges = barAges.selectAll("rect").data(data);
     bAges
@@ -112,7 +115,7 @@ d3.csv("data.csv").then((data) => {
         .append("path")
         .attr("class", "diCaprioAgesLine")
         .attr("d", valueLine(diCaprioAges));
-    lAges.attr("stroke", "black");
+    // lAges.attr("stroke", "black");
 
     // console.log(diCaprioAges);
 
@@ -123,4 +126,34 @@ d3.csv("data.csv").then((data) => {
         .attr("cx", (d) => x(d.year) + x.bandwidth() / 2)
         .attr("cy", (d) => y(d.age))
         .attr("r", x.bandwidth() / 5);
+
+    let dTexAge = diCaprioTexAge.selectAll("text").data(diCaprioAges);
+    dTexAge
+        .enter()
+        .append("text")
+        .attr("class", "girlsTextAge")
+        .text((d) => d.age)
+        .attr("text-anchor", "middle")
+        .attr("x", (d) => x(d.year) + x.bandwidth() / 2)
+        .attr("y", (d) => y(d.age) - x.bandwidth() / 2)
+        .attr("font-size", "10px");
+
+    // yAxisGroup
+    //     .append("g")
+    //     .attr("class", "y-grid")
+    //     .call(
+    //         d3
+    //             .axisLeft()
+    //             .scale(y)
+    //             .tickSize(-width + margin.left + margin.right, 0, 0)
+    //             .tickFormat("")
+    //     );
+
+    let title = tooltip.append("text").attr("id", "title");
+    title
+        .text("Leonardo Dicaprio's Age VS Lonardo's Girlfriend's Age")
+        .attr("x", width / 2 - margin.right - margin.left)
+        .attr("y", margin.top)
+        .attr("text-anchor", "middle")
+        .style("fill", "#798777");
 });

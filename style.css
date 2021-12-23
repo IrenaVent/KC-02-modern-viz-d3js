@@ -1,14 +1,35 @@
-/* body {
-    background: rgb(2, 0, 36);
-    background: linear-gradient(
-        180deg,
-        rgba(2, 0, 36, 1) 0%,
-        rgba(212, 213, 235, 1) 50%,
-        rgba(87, 157, 152, 1) 100%,
-        rgba(0, 212, 255, 1) 100%
-    );
-} */
+body {
+    background: #383e56;
+}
 
 text {
-    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    font-family: monospace;
+}
+
+#yAxisGroup {
+    color: #798777;
+}
+
+#xAxisGroup {
+    color: #798777;
+}
+
+rect {
+    fill: #c5d7bd;
+}
+
+#girlsTexAge {
+    fill: #c5d7bd;
+}
+
+#diCaprioTexAge {
+    fill: #fb743e;
+}
+
+#circleRefAge {
+    fill: #fb743e;
+}
+
+#lineAges {
+    stroke: #fb743e;
 }
