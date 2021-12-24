@@ -106,9 +106,18 @@ d3.csv("data.csv").then((data) => {
         })
         .transition()
         .ease(d3.easeLinear)
-        .duration(800)
+        .duration(400)
         .delay((d, i) => i * 50)
         .attr("height", (d) => height - y(d.age) - margin.bottom - margin.top);
+
+    // Animation ---> bars from bottom to top
+    //           ---> reminder replace y(d.age) (bAges) -> 0
+    // svg.selectAll("rect")
+    //     .transition()
+    //     .duration(800)
+    //     .attr("y", (d) => y(d.age))
+    //     .attr("height", (d) => height - y(d.age) - margin.bottom - margin.top)
+    //     .delay((d, i) => i * 60);
 
     let gTexAge = girlsTexAge.selectAll("text").data(data);
     gTexAge
@@ -139,8 +148,14 @@ d3.csv("data.csv").then((data) => {
         .enter()
         .append("circle")
         .attr("cx", (d) => x(d.year) + x.bandwidth() / 2)
-        .attr("cy", (d) => y(d.age))
+        .attr("cy", (d) => y(16))
         .attr("r", x.bandwidth() / 5);
+
+    svg.selectAll("circle")
+        .transition()
+        .duration(3000)
+        .attr("cy", (d) => y(d.age))
+        .delay((d, i) => i * 50);
 
     let dTexAge = diCaprioTexAge.selectAll("text").data(diCaprioAges);
     dTexAge
@@ -152,17 +167,6 @@ d3.csv("data.csv").then((data) => {
         .attr("x", (d) => x(d.year) + x.bandwidth() / 2)
         .attr("y", (d) => y(d.age) - x.bandwidth() / 2)
         .attr("font-size", "10px");
-
-    // yAxisGroup
-    //     .append("g")
-    //     .attr("class", "y-grid")
-    //     .call(
-    //         d3
-    //             .axisLeft()
-    //             .scale(y)
-    //             .tickSize(-width + margin.left + margin.right, 0, 0)
-    //             .tickFormat("")
-    //     );
 
     let title = tooltip.append("text").attr("id", "title");
     title
