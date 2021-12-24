@@ -50,6 +50,7 @@ let girlsTexAge = tooltip.append("g").attr("id", "girlsTexAge");
 let diCaprioTexAge = tooltip.append("g").attr("id", "diCaprioTexAge");
 let circleRefAge = tooltip.append("g").attr("id", "circleRefAge");
 let lineRefAge = tooltip.append("g").attr("id", "lineRefAge");
+let label = d3.select("body").append("div").attr("class", "label");
 
 // const formatDate = d3.timeParse("%Y");
 
@@ -90,10 +91,24 @@ d3.csv("data.csv").then((data) => {
         .enter()
         .append("rect")
         .attr("class", (d) => d.name)
-        .attr("height", (d) => height - y(d.age) - margin.bottom - margin.top)
         .attr("y", (d) => y(d.age))
         .attr("x", (d) => x(d.year))
-        .attr("width", x.bandwidth());
+        .attr("width", x.bandwidth())
+        .on("mousemove", function (d) {
+            label
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY + 70 + "px")
+                .style("display", "inline-block")
+                .html(d.name);
+        })
+        .on("mouseout", function (d) {
+            label.style("display", "none");
+        })
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(800)
+        .delay((d, i) => i * 50)
+        .attr("height", (d) => height - y(d.age) - margin.bottom - margin.top);
 
     let gTexAge = girlsTexAge.selectAll("text").data(data);
     gTexAge
@@ -151,7 +166,7 @@ d3.csv("data.csv").then((data) => {
 
     let title = tooltip.append("text").attr("id", "title");
     title
-        .text("Leonardo Dicaprio's Age VS Lonardo's Girlfriend's Age")
+        .text("Leonardo DiCaprio's age vs Lonardo's girlfriend's age")
         .attr("x", width / 2 - margin.right - margin.left)
         .attr("y", margin.top)
         .attr("text-anchor", "middle")
