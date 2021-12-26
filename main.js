@@ -161,7 +161,7 @@ d3.csv("data.csv").then((data) => {
 
     let title = tooltip.append("text").attr("id", "title");
     title
-        .text("Leonardo DiCaprio's age vs Lonardo's girlfriend's age")
+        .text("Leonardo DiCaprio's age vs Leonardo's girlfriends age")
         .attr("x", width / 2 - margin.right - margin.left)
         .attr("y", margin.top)
         .attr("text-anchor", "middle")
@@ -184,7 +184,7 @@ d3.csv("data.csv").then((data) => {
         .append("text")
         .attr("x", margin.left * 1.5)
         .attr("y", margin.top * 4.5)
-        .text("Leonardos's age")
+        .text("Leonardo's age")
         .attr("alignment-baseline", "middle")
         .style("fill", "#fb743e")
         .style("font-size", "10px");
@@ -192,7 +192,7 @@ d3.csv("data.csv").then((data) => {
         .append("text")
         .attr("x", margin.left * 1.5)
         .attr("y", margin.top * 6.5)
-        .text("Leonardo's girlfriend's age")
+        .text("Leonardo's girlfriends age")
         .attr("alignment-baseline", "middle")
         .style("fill", "#c5d7bd")
         .style("font-size", "10px");
