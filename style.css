@@ -1,10 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Nixie+One&display=swap");
+
 body {
-    background: #383e56;
+    background: #272a30;
 }
 
 text {
-    font-family: "Courier New", Courier, monospace;
-    /* font-weight: bold; */
+    font-family: "Nixie One";
+    font-weight: bold;
 }
 
 #yAxisGroup {
@@ -29,10 +31,11 @@ rect {
 
 #circleRefAge {
     fill: #fb743e;
+    stroke: #c5d7bd;
 }
 
 #lineAges {
-    stroke: #fb743e;
+    stroke: #c5d7bd;
 }
 
 .label {
@@ -44,6 +47,6 @@ rect {
     border: 1px solid #c5d7bd;
     padding: 7px;
     text-align: center;
-    font-family: "Courier New", Courier, monospace;
+    font-family: "Nixie One";
     color: #c5d7bd;
 }

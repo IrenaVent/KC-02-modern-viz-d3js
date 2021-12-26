@@ -67,13 +67,6 @@ d3.csv("data.csv").then((data) => {
         diCaprioAges.push(yearAge);
     }
 
-    // let prueba = [];
-    // for (let i = 0; i < data.length; i++) {
-    //     const hisAge = calculateHisAge(data[i].year);
-    //     const yearAge = [data[i].year, hisAge];
-    //     prueba.push(yearAge);
-    // }
-
     x.domain(data.map((d) => d.year));
     y.domain([
         d3.min(data.map((d) => d.age)) - 2,
@@ -84,7 +77,7 @@ d3.csv("data.csv").then((data) => {
     yAxisGroup.call(yAxis);
 
     yAxisGroup.select(".domain").remove();
-    // xAxisGroup.select(".domain").remove();
+    xAxisGroup.select(".domain").remove();
 
     let bAges = barAges.selectAll("rect").data(data);
     bAges
@@ -141,8 +134,6 @@ d3.csv("data.csv").then((data) => {
         .attr("d", valueLine(diCaprioAges));
     // lAges.attr("stroke", "black");
 
-    // console.log(diCaprioAges);
-
     let cRefAge = circleRefAge.selectAll("circle").data(diCaprioAges);
     cRefAge
         .enter()
@@ -175,4 +166,34 @@ d3.csv("data.csv").then((data) => {
         .attr("y", margin.top)
         .attr("text-anchor", "middle")
         .style("fill", "#798777");
+
+    let divLeyend = tooltip.append("g").attr("id", "divLeyend");
+    divLeyend
+        .append("circle")
+        .attr("cx", margin.left)
+        .attr("cy", margin.top * 4)
+        .attr("r", 6)
+        .style("fill", "#fb743e");
+    divLeyend
+        .append("circle")
+        .attr("cx", margin.left)
+        .attr("cy", margin.top * 6)
+        .attr("r", 6)
+        .style("fill", "#c5d7bd");
+    divLeyend
+        .append("text")
+        .attr("x", margin.left * 1.5)
+        .attr("y", margin.top * 4.5)
+        .text("Leonardos's age")
+        .attr("alignment-baseline", "middle")
+        .style("fill", "#fb743e")
+        .style("font-size", "10px");
+    divLeyend
+        .append("text")
+        .attr("x", margin.left * 1.5)
+        .attr("y", margin.top * 6.5)
+        .text("Leonardo's girlfriend's age")
+        .attr("alignment-baseline", "middle")
+        .style("fill", "#c5d7bd")
+        .style("font-size", "10px");
 });
