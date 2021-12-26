@@ -49,7 +49,7 @@ let tooltip = elementGroup.append("g").attr("id", "tooltip");
 let girlsTexAge = tooltip.append("g").attr("id", "girlsTexAge");
 let diCaprioTexAge = tooltip.append("g").attr("id", "diCaprioTexAge");
 let circleRefAge = tooltip.append("g").attr("id", "circleRefAge");
-let lineRefAge = tooltip.append("g").attr("id", "lineRefAge");
+let refLine = tooltip.append("g").attr("id", "refLine");
 let label = d3.select("body").append("div").attr("class", "label");
 
 // const formatDate = d3.timeParse("%Y");
@@ -193,6 +193,26 @@ d3.csv("data.csv").then((data) => {
         .attr("x", margin.left * 1.5)
         .attr("y", margin.top * 6.5)
         .text("Leonardo's girlfriend's age")
+        .attr("alignment-baseline", "middle")
+        .style("fill", "#c5d7bd")
+        .style("font-size", "10px");
+
+    refLine
+        .append("line")
+        .attr("class", "line")
+        .data(data)
+        .attr("x1", x(d3.min(data.map((d) => d.year))) + x.bandwidth())
+        .attr("y1", y(d3.max(data.map((d) => d.age))))
+        .attr("x2", x(d3.max(data.map((d) => d.year))) + x.bandwidth())
+        .attr("y2", y(d3.max(data.map((d) => d.age))))
+        .style("stroke-dasharray", "1, 6")
+        .style("stroke", "#798777");
+
+    refLine
+        .append("text")
+        .attr("x", x(d3.max(data.map((d) => d.year))) - x.bandwidth() * 3)
+        .attr("y", y(d3.max(data.map((d) => d.age)) + 0.5))
+        .text("Leo's age limit")
         .attr("alignment-baseline", "middle")
         .style("fill", "#c5d7bd")
         .style("font-size", "10px");
